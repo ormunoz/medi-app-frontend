@@ -1,4 +1,10 @@
-import { User } from "../auth/types";
+// import { User } from "../auth/types";
+
+export interface Profesional {
+    id: number,
+    rut: string,
+    role: string,
+}
 
 
 // class UserInfo implements User {

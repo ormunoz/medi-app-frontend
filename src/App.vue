@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <!-- Sidebar -->
-    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute" />
+    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute && admin" />
     <!-- Content -->
     <router-view />
   </div>
@@ -20,29 +20,35 @@ export default defineComponent({
     const authStore = useAuthStore();
     const router = useRouter();
     const authService = new AuthService()
-    const isLoggedIn = true
-    // const isLoggedIn: any = computed(async () => {
-    //   const hasValidSession = await authService.hasValidUserSession();
-    //   if (hasValidSession) {
-    //     const authToken = authStore.user;
-    //     if (authToken?.role === 'ADMIN') {
-    //       return isLoggedIn.value = true;
-    //     } else {
-    //       return router.push({ name: 'login' });
-    //     }
-    //   } else {
-    //     return router.push({ name: 'login' });
-    //   }
-    // });
+    const admin = ref<boolean>(false);
+    const isLoggedIn: any = computed(async () => {
+      const hasValidSession = await authService.hasValidUserSession();
+      if (hasValidSession) {
+        const authToken = authStore.user;
+        if (authToken?.role === 'ADMIN') {
+          return admin.value = true;
+        } else {
+          if (authToken?.role === 'PATIENT') {
+            admin.value = false
+            return router.push({ name: 'home' });
+          } else {
+            admin.value = false
+            return router.push({ name: 'login' });
+          }
+        } 
+    }
+      });
 
-    const isLoginOrRegisterRoute = computed(() => {
-      return router.currentRoute.value.name === "login" || router.currentRoute.value.name === "register";
-    });
+console.log(isLoggedIn)
+const isLoginOrRegisterRoute = computed(() => {
+  return router.currentRoute.value.name === "login";
+});
 
-    return {
-      isLoggedIn,
-      isLoginOrRegisterRoute,
-    };
+return {
+  isLoggedIn,
+  isLoginOrRegisterRoute,
+  admin
+};
   }
 });
 </script>

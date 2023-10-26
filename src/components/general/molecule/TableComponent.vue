@@ -58,10 +58,6 @@
     </section>
   </header>
   <div v-if="productSell.length > 0">
-    <ModalComponent v-if="showModal" @close="showModal = false" :title="title" :productPresent="productPresent"
-      :clean-product="cleanProduct">
-      <VoucherComponent :productos="productSell" @closeModal="showModalSell" />
-    </ModalComponent>
   </div>
   <div v-else>
     <ModalComponent v-if="showModal" @close="showModal = false" :title="titleError" :clean-product="cleanProduct">
@@ -114,10 +110,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    voucher: {
-      type: Boolean,
-      default: false
-    },
+
   },
 
   components: { TextField, Selector, ModalComponent },

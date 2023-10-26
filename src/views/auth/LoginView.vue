@@ -54,13 +54,17 @@ export default defineComponent({
             if (verification === 1 || verification === 2) console.log(verification === 1 ? 'debe ingresar un rut' : 'debe ingresar una contraseña')
             if (verification === 0) {
                 await authService.login(userLogin.value)
-                    .then((response) => {
+                    .then(async (response)  => {
                         if (response.code === 200) {
                             const { token, user } = response.data.data;
                             authStore.setUser(user)
                             authStore.setToken(token)
-                            authService.hasValidUserSession()
-                            router.push('profesionals')
+                            const itsUserActive = await authService.hasValidUserSession()
+                            if(user.role === 'ADMIN') {
+                                itsUserActive ? router.push('profesionals') : router.push('/')
+                            }else{
+                                itsUserActive ? router.push('home') : router.push('/')
+                            }
                         } else {
                             console.log('no se pudo Logear');
                         }
