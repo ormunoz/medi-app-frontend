@@ -5,7 +5,7 @@ export class AuthenticatedService {
 
     authStore = useAuthStore();
 
-    constructor(){
+    constructor() {
         this.authStore = useAuthStore()
     }
 
@@ -13,8 +13,8 @@ export class AuthenticatedService {
      * Token del usuario autenticado. En caso de no estar autenticado, se
      * genera una excepción
      */
-    get token(): string{
-        if(!this.authStore.token){
+    get token(): string {
+        if (!this.authStore.token) {
             throw new Error("Usuario no autenticado")
         }
 

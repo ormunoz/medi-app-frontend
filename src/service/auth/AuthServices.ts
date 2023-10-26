@@ -14,11 +14,10 @@ export class AuthService {
         return getResponse(url, token)
     }
 
-    // async logout(token: string): Promise<Response<any>>{
-    //     const url = `${getEnvConfig().apiURL}/auth/logout`
-
-    //     return getResponse(url, token, 'POST')
-    // }
+    async logout(token: any): Promise<Response<any>>{
+        const url = `${getEnvConfig().apiURL}/api/v1/auth/logout`
+        return getResponse(url, token, 'POST')
+    }
 
     // async register(userInfo: object): Promise<Response<User>>{
     //     const url = `${getEnvConfig().apiURL}/auth/register`

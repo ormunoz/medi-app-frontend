@@ -3,7 +3,7 @@ export interface UserSession {
         token: string
         user: {
             id: number,
-            userName: string,
+            rut: string,
             role: string,
         }
     }
@@ -11,13 +11,13 @@ export interface UserSession {
 
 export interface UserLocal {
     id: number,
-    userName: string,
+    rut: string,
     role: string,
 }
 
 export interface User {
     id: number,
-    userName: string,
+    rut: string,
     role: string,
 }
 
@@ -25,7 +25,7 @@ export interface User {
 
 export class userLogin {
     constructor(
-        public userName: string,
+        public rut: string,
         public password: string
     ) { }
 }
