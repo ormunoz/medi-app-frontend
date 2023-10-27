@@ -12,7 +12,7 @@ import { defineComponent, ref } from 'vue';
 export default defineComponent({
   props: {
     modelValue: {
-      type: String,
+      type: [String, Number], // Acepta String o Number
     },
     type: {
       type: String,
@@ -27,13 +27,22 @@ export default defineComponent({
   setup(props, { emit }) {
 
     const inputId = `floatingInput-${Math.random().toString(36).substr(2, 9)}`;
-    const inputValue = ref<string>(props.modelValue || '');
+    const inputValue = ref<number | string>(props.modelValue || '');
     const inputType = ref<string>(props.type ? props.type : 'text');
+
+    if (typeof props.modelValue === 'number') {
+      inputValue.value = props.modelValue;
+    }
 
     const updateValue = (event: InputEvent) => {
       const value = event.target instanceof HTMLInputElement ? event.target.value : '';
       inputValue.value = value;
-      emit('update:modelValue', value);
+
+      if (props.type === 'number' && !isNaN(value as any)) {
+        emit('update:modelValue', parseFloat(value as string));
+      } else {
+        emit('update:modelValue', value);
+      }
     };
 
     return {
