@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="btn btn-info  dropdown-toggle" :style="style" type="button" id="dropdownMenuButton1"
+    <button class="btn btn-outline-info  dropdown-toggle" :style="style" type="button" id="dropdownMenuButton1"
       data-bs-toggle="dropdown" aria-expanded="false">
       {{ selectedName }}
     </button>
