@@ -8,7 +8,7 @@
                 <article class="row">
                     <div class="col-md-6 offset-md-3">
                         <h1 class="h3 mb-3 fw-normal">Inicio de sesión</h1>
-                        <TextField v-model="userLogin.rut" type="text" label="Nombre" placeholder="Nombre completo" />
+                        <TextField v-model="userLogin.rut" type="text" label="Usuario" placeholder="Usuario" />
                         <TextField v-model="userLogin.password" type="password" label="Contraseña" placeholder="Password" />
                         <button class="w-100 btn btn-lg btn-info mt-4" @click="login">Iniciar Sesión</button>
                         <p class="mt-5 mb-3 text-muted">
