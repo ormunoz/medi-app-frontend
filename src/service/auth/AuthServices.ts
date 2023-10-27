@@ -6,7 +6,7 @@ import { getResponse, keysToSnake } from "../utils";
 export class AuthService {
     async login(userLogin: userLogin): Promise<Response<UserSession>> {
         const url = `${getEnvConfig().apiURL}/api/v1/auth/login`
-        return getResponse(url, undefined, 'POST', keysToSnake(userLogin), undefined)
+        return getResponse(url, undefined, 'POST', keysToSnake(userLogin))
     }
 
     async getProfile(token: string): Promise<Response<User>> {

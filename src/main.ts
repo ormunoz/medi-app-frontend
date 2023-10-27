@@ -11,7 +11,6 @@ import { faTwitter } from '@fortawesome/free-brands-svg-icons'
 import 'vue3-toastify/dist/index.css';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Swal from 'sweetalert2';
-
 const pinia = createPinia();
 const app = createApp(App);
 library.add(faUser, faEnvelope, faUserSecret, faTwitter, fas);
@@ -29,7 +28,8 @@ app.directive("click-outside", {
   },
 });
 
-app.provide('$swal', Swal);
+
+app.config.globalProperties.$swal = Swal;
 app.use(pinia);
 app.use(router);
 app.component("Popper", Popper);

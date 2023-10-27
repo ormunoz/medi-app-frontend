@@ -28,6 +28,7 @@ import { AuthService } from "@/service/auth/AuthServices";
 import { useAuthStore } from '../../service/stores/auth';
 import { useRouter } from 'vue-router';
 import TextField from '@/components/general/atoms/TextField.vue'
+import { toast } from 'vue3-toastify';
 
 export default defineComponent({
     components: {
@@ -54,19 +55,22 @@ export default defineComponent({
             if (verification === 1 || verification === 2) console.log(verification === 1 ? 'debe ingresar un rut' : 'debe ingresar una contraseña')
             if (verification === 0) {
                 await authService.login(userLogin.value)
-                    .then(async (response)  => {
+                    .then(async (response) => {
+                        console.log(response)
                         if (response.code === 200) {
                             const { token, user } = response.data.data;
                             authStore.setUser(user)
                             authStore.setToken(token)
                             const itsUserActive = await authService.hasValidUserSession()
-                            if(user.role === 'ADMIN') {
+                            if (user.role === 'ADMIN') {
                                 itsUserActive ? router.push('profesionals') : router.push('/')
-                            }else{
+                            } else {
                                 itsUserActive ? router.push('home') : router.push('/')
                             }
                         } else {
-                            console.log('no se pudo Logear');
+                            toast.warning("Problemas al logearse", {
+                                autoClose: 4000,
+                            });
                         }
                     })
             }
@@ -88,7 +92,7 @@ export default defineComponent({
 
 .vertical-center {
     color: rgb(27, 90, 141);
-    background : rgb(88, 240, 194);
+    background: rgb(88, 240, 194);
     display: flex;
     justify-content: center;
     align-items: center;
