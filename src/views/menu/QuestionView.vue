@@ -23,6 +23,7 @@ import { QuestionOption, QuestionOptionAdd } from "@/service/questions/types";
 import Accordion from "@/components/general/atoms/Accordion.vue";
 import ModalComponent from "@/components/general/molecule/ModalComponent.vue"
 import { toast } from 'vue3-toastify';
+import $swal from 'sweetalert2';
 
 export default {
     name: 'TrainingList',
@@ -32,7 +33,6 @@ export default {
     },
     setup() {
 
-        const $swal = inject('$swal');
         const questionService = new QuestionService();
         const questionAccordionId = ref<string>('questionAccordion');
         const action = ref<string>();

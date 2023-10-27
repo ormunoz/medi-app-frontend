@@ -79,35 +79,54 @@ export default defineComponent({
       if (props.action == 'edit') {
         if (props.type == 'option') {
           const response = await questionService.optionUpdate(id.value, score.value, text.value, indice.value);
-          toast.success("option actualizada correctamente", {
-            autoClose: 4000,
-          });
-          emit('close');
-
+          if (response.code == 200) {
+            toast.success("option agregada correctamente", {
+              autoClose: 4000,
+            });
+            emit('close');
+          } else {
+            toast.warning("Debe llenar todos los campos, no debe existir la alternativa para esta pregunta", {
+              autoClose: 4000,
+            });
+          }
         } else {
           const response = await questionService.questioUpdate(id.value, question.value, indice.value);
-          toast.success("pregunta actualizada correctamente", {
-            autoClose: 4000,
-          });
-          emit('close');
-
+          if (response.code == 200) {
+            toast.success("pregunta actualizada correctamente", {
+              autoClose: 4000,
+            });
+            emit('close');
+          } else {
+            toast.warning("Debe llenar todos los campos, no debe existir la pregunta", {
+              autoClose: 4000,
+            });
+          }
         }
       } else {
         if (props.type == 'option') {
           const response = await questionService.optionAdd(score.value, text.value, indice.value, questionId.value);
-          toast.success("option agregada correctamente", {
-            autoClose: 4000,
-          });
-          emit('close');
-
+          if (response.code == 200) {
+            toast.success("option agregada correctamente", {
+              autoClose: 4000,
+            });
+            emit('close');
+          } else {
+            toast.warning("Debe llenar todos los campos, no debe existir la alternativa para esta pregunta", {
+              autoClose: 4000,
+            });
+          }
         } else {
           const response = await questionService.questioAdd(question.value, indice.value);
-          console.log('pregunta agregada correctamente')
-          toast.success("pregunta agregada correctamente", {
-            autoClose: 4000,
-          });
-          emit('close');
-
+          if (response.code == 200) {
+            toast.success("pregunta agregada correctamente", {
+              autoClose: 4000,
+            });
+            emit('close');
+          } else {
+            toast.warning("Debe llenar todos los campos, no debe existir la pregunta", {
+              autoClose: 4000,
+            });
+          }
         }
       }
     }
