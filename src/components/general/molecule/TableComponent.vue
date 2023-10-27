@@ -1,74 +1,76 @@
 <template>
   <header class="container">
-    <section class="d-flex align-items-center overflow-x-auto mb-4 flex-md-row flex-column">
-      <TextField v-model="searchText" type="text" label="Buscador" placeholder="Buscador" />
-      <Selector v-if="order" :name="'N° Filas'" :style="'width: 140px; height: 40px; margin-left: 15px; margin-top: 23px'"
-        :items="pageSelect" @item-selected="onUpdateFile"></Selector>
-    </section>
-    <section>
-      <article class="row">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th v-for="column in columns" :key="column.id">{{ column.label }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in filteredItems" :key="item.id">
-              <td v-for="column in columns" :key="column.name">
-                <template v-if="column.name === 'quantity' && showButtons">
-                  <input v-model="item.quantity" @input="updateStock(item)" type="number"
-                    @keydown="handleQuantityKeydown(item)" class="form-control input-quantity"
-                    :max="item.stock + item.prevQuantity" :min="0" />
-                </template>
-                <template v-else>
-                  {{ item[column.name] }}
-                </template>
-              </td>
-              <td v-if="showButtons">
-                <div class="d-flex align-items-center">
-                  <button v-for="button in buttons" :name="button.iconName" :key="button.id"
-                    :class="['cursor-pointer px-2 py-2', button.className]" @click="button.action(item)">{{ button.name
-                    }}</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <nav aria-label="Page navigation example" v-if="!searchText">
-          <ul class="pagination pagination-xl justify-content-center green-pagination">
-            <li class="page-item" :class="{ disabled: currentPage === 1 }" @click="firstPage">
-              <a class="page-link"><font-awesome-icon icon="angles-left" /></a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === 1 }" @click="previousPage">
-              <a class="page-link"><font-awesome-icon icon="chevron-left" /></a>
-            </li>
-            <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page }">
-              <a class="page-link" @click.prevent="goToPage(page)">{{ page }}</a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === totalPages }" @click="nextPage">
-              <a class="page-link"><font-awesome-icon icon="chevron-right" /></a>
-            </li>
-            <li class="page-item" :class="{ disabled: currentPage === totalPages }" @click="lastPage">
-              <a class="page-link"><font-awesome-icon icon="angles-right" /></a>
-            </li>
-          </ul>
-        </nav>
-      </article>
-    </section>
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">{{ itsAdmin ? 'Informacion de los profesionales' : 'Informacion de los Pacientes' }}</h1>
+        <section class="d-flex align-items-center overflow-x-auto mb-4 flex-md-row flex-column">
+          <button v-if="itsAdmin" @click="addProfesional()" class="btn btn-outline-primary me-3 col-auto">Agregar
+            Profesional</button>
+          <Selector v-if="order" :name="'N° Filas'" class="col-2" :items="pageSelect" @item-selected="onUpdateFile">
+          </Selector>
+          <TextField v-model="searchText" type="text" label="Buscador" placeholder="Buscador" />
+        </section>
+        <section v-if="filteredItems.length >= 1">
+          <article class="row">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th v-for="column in columns" :key="column.id">{{ column.label }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in filteredItems" :key="item.id">
+                  <td v-for="column in columns" :key="column.name">
+                    <span>{{ item[column.name] }}</span>
+                  </td>
+                  <td v-if="showButtons">
+                    <div class="d-flex align-items-center">
+
+                      <button v-for="button in buttons" :name="button.iconName" :key="button.id"
+                        :class="['cursor-pointer px-2 py-2', button.className]" @click="button.action(item)"><i
+                          class="material-icons">{{button.iconName}}</i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation example" v-if="!searchText">
+              <ul class="pagination pagination-xl justify-content-center green-pagination">
+                <li class="page-item" :class="{ disabled: currentPage === 1 }" @click="firstPage">
+                  <a class="page-link"><font-awesome-icon icon="angles-left" /></a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === 1 }" @click="previousPage">
+                  <a class="page-link"><font-awesome-icon icon="chevron-left" /></a>
+                </li>
+                <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page }">
+                  <a class="page-link" @click.prevent="goToPage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }" @click="nextPage">
+                  <a class="page-link"><font-awesome-icon icon="chevron-right" /></a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }" @click="lastPage">
+                  <a class="page-link"><font-awesome-icon icon="angles-right" /></a>
+                </li>
+              </ul>
+            </nav>
+          </article>
+        </section>
+        <section v-else>
+          <p v-if="itsAdmin">No hay datos para mostrar, porfavor hacer click en el boton "Agregar Profesional" para poder
+            visualizar al profesional creado.
+          </p>
+          <p v-else>No hay datos de pacientes registrados en este momento, debe esperar a que alguno se registre para
+            poder visualizarlo.
+          </p>
+        </section>
+      </div>
+    </div>
   </header>
-  <div v-if="productSell.length > 0">
-  </div>
-  <div v-else>
-    <ModalComponent v-if="showModal" @close="showModal = false" :title="titleError" :clean-product="cleanProduct">
-    </ModalComponent>
-  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed, PropType } from 'vue';
 import ModalComponent from './ModalComponent.vue';
-// import AddButton from '@/components/general/atoms/AddButton.vue';
 import Selector from '../atoms/Selector.vue';
 import TextField from '@/components/general/atoms/TextField.vue'
 
@@ -87,6 +89,10 @@ export default defineComponent({
       required: true
     },
     showButtons: {
+      type: Boolean,
+      default: false
+    },
+    itsAdmin: {
       type: Boolean,
       default: false
     },
@@ -114,7 +120,7 @@ export default defineComponent({
   },
 
   components: { TextField, Selector, ModalComponent },
-  setup(props) {
+  setup(props, { emit }) {
     const searchText = ref<string>('')
     const currentPage = ref<number>(1)
     const matches = ref<boolean>(true)
@@ -122,7 +128,6 @@ export default defineComponent({
     const typeRange = ref()
     const showFirstPages = computed(() => currentPage.value <= 10);
     const showLastPages = computed(() => currentPage.value > totalPages.value - 10);
-    const productSell = ref<[]>([]);
     const showModal = ref(false);
     const title = ref('Generar Venta');
     const titleError = ref('No hay productos agregados')
@@ -137,7 +142,7 @@ export default defineComponent({
       { id: 6, label: '0-150' },
     ])
 
-  
+
 
     function onUpdateFile(value: any) {
       typeRange.value = value.id;
@@ -231,53 +236,12 @@ export default defineComponent({
       currentPage.value = 1;
     };
 
-    const updateStock = (product: any) => {
-      console.log(product.quantity , 'product.quantity ');
-      console.log(product.prevQuantity, 'product.prevQuantity');
-      
-      
-      const quantityChange = product.quantity - product.prevQuantity;
-      product.stock -= quantityChange;
-      product.prevQuantity = product.quantity;
-
-      // Asegurarse de que quantity no exceda el stock original
-      if (product.quantity > product.stock + product.prevQuantity) {
-        product.quantity = product.stock + product.prevQuantity;
-      }
-
-      if (product.stock < 0) {
-        product.stock = 0;
-      } 
-    };
-
-    // Aseguramos que al ingresar un numero por teclado quantity no exeda el stock
-    const handleQuantityKeydown = (item: any) => {
-      console.log(item.quantity , 'product.quantity ');
-      console.log(item.prevQuantity, 'product.prevQuantity');
-      const originalStock = item.stock + item.prevQuantity;
-      if (item.quantity > originalStock) {
-        item.quantity = originalStock;
-      }
-    };
-
-    const saveProduct = () => {
-      productSell.value = props.items.filter((e: any) => e.quantity > 0);
-      showModal.value = true;
-    };
-
-    const showModalSell = (close: any) => {
-      showModal.value = false
-      if (close === true) cleanProduct()
-    };
-
-    const cleanProduct = () => {
-      props.items.forEach((item: any) => {
-        item.quantity = 0;
-      });
-      productSell.value = []
+    const addProfesional = () => {
+      emit('add')
     };
 
     return {
+      addProfesional,
       searchText,
       filteredItems,
       previousPage,
@@ -291,17 +255,11 @@ export default defineComponent({
       goToPage,
       lastPage,
       firstPage,
-      updateStock,
       visiblePages,
-      handleQuantityKeydown,
-      saveProduct,
-      cleanProduct,
-      productSell,
       showModal,
       title,
       titleError,
       productPresent,
-      showModalSell,
     };
   },
 });
