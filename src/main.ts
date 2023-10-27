@@ -5,10 +5,12 @@ import { createPinia } from "pinia";
 import Popper from "vue3-popper";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas , faUser, faEnvelope, faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { fas, faUser, faEnvelope, faUserSecret } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons'
-
+import 'vue3-toastify/dist/index.css';
+import 'sweetalert2/dist/sweetalert2.min.css';
+import Swal from 'sweetalert2';
 
 const pinia = createPinia();
 const app = createApp(App);
@@ -26,6 +28,8 @@ app.directive("click-outside", {
     document.body.removeEventListener("mousedown", el.clickOutsideEvent);
   },
 });
+
+app.provide('$swal', Swal);
 app.use(pinia);
 app.use(router);
 app.component("Popper", Popper);
