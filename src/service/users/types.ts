@@ -83,6 +83,7 @@ export interface ProfesionalAdd {
     [x: string]: any;
     id: number;
     role: string;
+    user_id:number;
     password: string;
     rut: string;
     especiality: string;
