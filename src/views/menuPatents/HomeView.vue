@@ -119,8 +119,6 @@ export default defineComponent({
 
             const totalScore = selectedScores.reduce((total, score) => total + score, 0);
             userRegister.value.totalScore = totalScore;
-
-
             const response = await userService.addPatient(userRegister.value);
             if (response.code == 200) {
                 toast.success("Paciente Registrado. Ahora volverá al Login.", {

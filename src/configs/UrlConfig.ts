@@ -1,4 +1,3 @@
-require('dotenv').config();
 
 export enum EnvNames {
   PROD = 'production',
@@ -12,15 +11,15 @@ export interface EnvConfig {
 }
 
 const ENV_CONFIGS: Record<EnvName, EnvConfig> = {
-  production: {
-    apiURL: process.env.API_URL || 'http://localhost:8080',
-    env: EnvNames.PROD,
-  },
-  development: {
-    apiURL: process.env.API_URL || 'http://localhost:8080',
-    env: EnvNames.DEV,
-  },
-};
+    production: {
+      apiURL: process.env.API_URL || 'http://localhost:5000',
+      env: EnvNames.PROD,
+    },
+    development: {
+      apiURL: process.env.API_URL || 'http://localhost:5000',
+      env: EnvNames.DEV,
+    },
+  };
 
 export function getEnvConfig(): EnvConfig {
   const nodeEnv = process.env.NODE_ENV as EnvName;
