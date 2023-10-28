@@ -83,7 +83,7 @@ export interface ProfesionalAdd {
     [x: string]: any;
     id: number;
     role: string;
-    user_id:number;
+    user_id: number;
     password: string;
     rut: string;
     especiality: string;
@@ -93,3 +93,65 @@ export interface ProfesionalAdd {
     maxScore: number;
 }
 
+
+export class PatientOption {
+    id: number;
+    patients_id: number;
+    option_id: number;
+    patients: {
+        id: number;
+        email: string;
+        city: string;
+        last_name: string;
+        name: string;
+        total_score: number;
+        user_id: number;
+        assigned_professional: number;
+    };
+    option: {
+        id: number;
+        text: string;
+        score: number;
+        indice: number;
+        question_id: number;
+        questions: {
+            id: number;
+            indice: number;
+            question: string;
+        };
+    }[];
+
+    constructor(
+        id: number,
+        patients_id: number,
+        option_id: number,
+        patients: {
+            id: number;
+            email: string;
+            city: string;
+            last_name: string;
+            name: string;
+            total_score: number;
+            user_id: number;
+            assigned_professional: number;
+        },
+        option: {
+            id: number;
+            text: string;
+            score: number;
+            indice: number;
+            question_id: number;
+            questions: {
+                id: number;
+                indice: number;
+                question: string;
+            }
+        }[]
+    ) {
+        this.id = id;
+        this.patients_id = patients_id;
+        this.option_id = option_id;
+        this.patients = patients;
+        this.option = option;
+    }
+}

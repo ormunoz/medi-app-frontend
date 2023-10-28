@@ -33,4 +33,13 @@ export class UserService extends AuthenticatedService {
         return getResponse(url, this.token, "DELETE")
 
     }
+
+
+    async getUserOption(patentsId: Number): Promise<Response<Patient>> {
+        const params = {
+            id: patentsId
+        }
+        const url = `${getEnvConfig().apiURL}/api/v1/auth/one_option_patient`
+        return getResponse(url, this.token, "POST", params)
+    }
 }
