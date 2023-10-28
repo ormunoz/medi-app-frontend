@@ -8,7 +8,7 @@
                 <span class="material-icons">keyboard_double_arrow_right</span>
             </button>
         </div>
-        <h3>MobiApp Menu Admin</h3>
+        <h3>MobiApp Menu {{ role === 'ADMIN'? 'Admin' : 'Paciente'  }}</h3>
         <section class="menu" v-if="role === 'ADMIN'">
             <NavigationLink to="/profesionals" icon="admin_panel_settings" text="Profesionales" />
             <NavigationLink to="/patients" icon="group" text="Pacientes" />

@@ -34,14 +34,14 @@ export default defineComponent({
             return router.push({ name: 'info_patient' });
           } else {
             admin.value = false
-            return router.push({ name: 'login' });
+            return router.push({ name: '/' });
           }
         }
       }
     });
 
     const isLoginOrRegisterRoute = computed(() => {
-      return router.currentRoute.value.name === "login";
+      return router.currentRoute.value.name === "/";
     });
 
     return {
