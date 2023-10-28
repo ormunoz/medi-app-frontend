@@ -86,7 +86,7 @@ export default {
             });
 
             if (result.isConfirmed) {
-                const response = await userService.deleteProfesional(profesional.id);
+                const response = await userService.deleteProfesional(profesional.user.id);
                 toast.success("Profesional eliminado con exito", {
                     autoClose: 4000,
                 });
