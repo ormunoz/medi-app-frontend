@@ -13,7 +13,7 @@ export class UserService extends AuthenticatedService {
     }
     
 
-    async getOneUser(userId: Number): Promise<Response<patientOne>> {
+    async getOneUser(userId: Number) {
         const params = {
             id : userId
         }
