@@ -1,6 +1,7 @@
 import { Response } from "../types";
 import { AuthenticatedService } from "../auth/AuthenticatedServices";
-import { Profesional, Patient, ProfesionalAdd } from "./types";
+import { Profesional, Patient, ProfesionalAdd, patientOne} from "./types";
+import { userRegister } from "../auth/types";
 import { getResponse, keysToSnake } from "../utils";
 import { getEnvConfig } from "@/configs/UrlConfig";
 
@@ -9,6 +10,15 @@ export class UserService extends AuthenticatedService {
     async getProfesional(): Promise<Response<Profesional>> {
         const url = `${getEnvConfig().apiURL}/api/v1/auth/all_profesional`
         return getResponse(url, this.token)
+    }
+    
+
+    async getOneUser(userId: Number): Promise<Response<patientOne>> {
+        const params = {
+            id : userId
+        }
+        const url = `${getEnvConfig().apiURL}/api/v1/auth/one`
+        return getResponse(url, this.token, 'POST', params)
     }
 
     async getPatient(): Promise<Response<Patient>> {
@@ -19,6 +29,13 @@ export class UserService extends AuthenticatedService {
     async addProfesional(profesionalAdd: ProfesionalAdd) {
         const url = `${getEnvConfig().apiURL}/api/v1/auth/register`
         return getResponse(url, this.token, "POST", keysToSnake(profesionalAdd))
+
+    }
+
+    async addPatient(profesionalAdd: userRegister) {
+        console.log(profesionalAdd)
+        const url = `${getEnvConfig().apiURL}/api/v1/auth/register`
+        return getResponse(url, undefined, "POST", keysToSnake(profesionalAdd))
 
     }
 

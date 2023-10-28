@@ -8,7 +8,7 @@ export class QuestionService extends AuthenticatedService {
 
     async getQuestion(): Promise<Response<QuestionOption>> {
         const url = `${getEnvConfig().apiURL}/api/v1/question/all`
-        return getResponse(url, this.token)
+        return getResponse(url)
     }
 
     async questioAdd(question: String, indice: any) {
