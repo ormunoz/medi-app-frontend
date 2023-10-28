@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-md-6">
                                 <router-link to="/" class="button text-muted" style="text-decoration: none; ">
-                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="RegisterUser">Volver al
+                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Volver al
                                         Login</button>
                                 </router-link>
                             </div>
@@ -136,8 +136,10 @@ export default defineComponent({
             }
         };
 
-
-        return { userRegister, RegisterUser, questionOption };
+        const Back = () => {
+            router.push('/');
+        }
+        return { userRegister, RegisterUser, questionOption, Back };
     }
 });
 </script>

@@ -54,7 +54,7 @@ export default defineComponent({
                 .then((response) => {
                     if (response.code === 200) {
                         authStore.logout()
-                        router.push('/')
+                        router.push({ name: 'root' });
                     } else {
                         toast.info("Error al hacer Logout", {
                             autoClose: 4000,

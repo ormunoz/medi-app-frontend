@@ -9,7 +9,7 @@ import InfoPatientView from '../views/menuPatents/InfoPatientView.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'login',
+    name: 'root',
     component: LoginView
   },
   {

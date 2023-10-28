@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <!-- Sidebar -->
-    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute && admin "/>
+    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute && admin" />
     <!-- Content -->
     <router-view />
   </div>
@@ -33,10 +33,13 @@ export default defineComponent({
             admin.value = true
             return router.push({ name: 'info_patient' });
           } else {
+            console.log('pasepor aui')
             admin.value = false
             return router.push({ name: '/' });
           }
         }
+      } else {
+        admin.value = false
       }
     });
 
