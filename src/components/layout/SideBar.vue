@@ -10,11 +10,10 @@
         </div>
         <h3>MobiApp Menu Admin</h3>
         <section class="menu">
-            <NavigationLink to="/profesionals" icon="storefront" text="Profesionales" />
+            <NavigationLink to="/profesionals" icon="admin_panel_settings" text="Profesionales" />
             <NavigationLink to="/patients" icon="group" text="Pacientes" />
             <NavigationLink to="/questions" icon="question_mark" text="Preguntas" />
         </section>
-
         <span class="flex"></span>
 
         <section class="menu">
