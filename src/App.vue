@@ -1,11 +1,12 @@
 <template>
   <div class="app">
     <!-- Sidebar -->
-    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute && admin" />
+    <SideBar v-if="isLoggedIn && !isLoginOrRegisterRoute && admin "/>
     <!-- Content -->
     <router-view />
   </div>
 </template>
+
 
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
@@ -29,26 +30,26 @@ export default defineComponent({
           return admin.value = true;
         } else {
           if (authToken?.role === 'PATIENT') {
-            admin.value = false
-            return router.push({ name: 'home' });
+            admin.value = true
+            return router.push({ name: 'info_patient' });
           } else {
             admin.value = false
             return router.push({ name: 'login' });
           }
-        } 
-    }
-      });
+        }
+      }
+    });
 
-console.log(isLoggedIn)
-const isLoginOrRegisterRoute = computed(() => {
-  return router.currentRoute.value.name === "login";
-});
+    console.log(isLoggedIn)
+    const isLoginOrRegisterRoute = computed(() => {
+      return router.currentRoute.value.name === "login";
+    });
 
-return {
-  isLoggedIn,
-  isLoginOrRegisterRoute,
-  admin
-};
+    return {
+      isLoggedIn,
+      isLoginOrRegisterRoute,
+      admin
+    };
   }
 });
 </script>
@@ -63,6 +64,8 @@ return {
   --light: #94aac0;
   --sidebar-width: 300px;
 }
+
+
 
 * {
   margin: 0;

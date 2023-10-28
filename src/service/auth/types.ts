@@ -29,3 +29,18 @@ export class userLogin {
         public password: string
     ) { }
 }
+
+
+export class userRegister {
+    constructor(
+        public rut: string,
+        public password: string,
+        public role: string,
+        public name: string,
+        public last_name: string,
+        public city: string,
+        public email: string,
+        public totalScore: number,
+        public option: [],
+    ) { }
+}

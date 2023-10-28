@@ -55,7 +55,9 @@ export default {
                 console.error(error);
             }
         };
-
+        
+        onMounted(loadData);
+        
         const listTable = async (registro: any) => {
             title.value = 'Datos del paciente'
             const response = await userService.getUserOption(registro.id);
@@ -67,7 +69,6 @@ export default {
             { id: 1, name: 'Ver', action: listTable, className: 'btn btn-outline-secondary me-3', iconName: 'preview' },
         ])
 
-        onMounted(loadData);
 
         const closeModal = () => {
             showModal.value = false

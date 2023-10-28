@@ -32,7 +32,7 @@ export default {
         const sendProfesional = ref<ProfesionalAdd[]>([]);
         const action = ref<string>('');
         const title = ref<string>('');
-        const columns = ref([{ name: 'rut', label: 'Rut' }, { name: 'name', label: 'Nombre' }, { name: 'lastName', label: 'Apellido' }, { name: 'especiality', label: 'Especialidad' },
+        const columns = ref([{ name: 'rut', label: 'Rut o Usuario' }, { name: 'name', label: 'Nombre' }, { name: 'lastName', label: 'Apellido' }, { name: 'especiality', label: 'Especialidad' },
         { name: 'minScore', label: 'Puntaje Minimo' }, { name: 'maxScore', label: 'Puntaje Maximo' }])
         const searchTableData = ref(['name', 'lastName', 'especiality'])
 

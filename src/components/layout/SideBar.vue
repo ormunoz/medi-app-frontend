@@ -9,10 +9,13 @@
             </button>
         </div>
         <h3>MobiApp Menu Admin</h3>
-        <section class="menu">
+        <section class="menu" v-if="role === 'ADMIN'">
             <NavigationLink to="/profesionals" icon="admin_panel_settings" text="Profesionales" />
             <NavigationLink to="/patients" icon="group" text="Pacientes" />
             <NavigationLink to="/questions" icon="question_mark" text="Preguntas" />
+        </section>
+        <section class="menu" v-if="role === 'PATIENT'">
+            <NavigationLink to="/info_patient" icon="person" text="Info Paciente" />
         </section>
         <span class="flex"></span>
 
@@ -21,7 +24,6 @@
                 <span class="material-icons">logout</span>
                 <span class="text">Logout</span>
             </a>
-            <NavigationLink to="/settings" icon="settings" text="Perfil" />
         </section>
     </aside>
 </template>
@@ -40,13 +42,13 @@ export default defineComponent({
         const is_expanded = ref<boolean>(true)
         const authService = new AuthService()
         const router = useRouter();
-
+        const authStore = useAuthStore()
+        const role = authStore.user?.role
         const ToggleMenu = () => {
             is_expanded.value = !is_expanded.value
         }
 
         const logout = async () => {
-            const authStore = useAuthStore()
             await authService.logout(authStore.token)
                 .then((response) => {
                     if (response.code === 200) {
@@ -61,7 +63,8 @@ export default defineComponent({
         return {
             ToggleMenu,
             is_expanded,
-            logout
+            logout,
+            role
         };
     }
 })

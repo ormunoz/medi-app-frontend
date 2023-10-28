@@ -8,12 +8,16 @@
                 <article class="row">
                     <div class="col-md-6 offset-md-3">
                         <h1 class="h3 mb-3 fw-normal">Inicio de sesión</h1>
-                        <TextField v-model="userLogin.rut" type="text" label="Usuario" placeholder="Usuario" />
+                        <TextField v-model="userLogin.rut" type="text" label="Rut o Usuario" placeholder="Rut o Usuario" />
                         <TextField v-model="userLogin.password" type="password" label="Contraseña" placeholder="Password" />
                         <button class="w-100 btn btn-lg btn-info mt-4" @click="login">Iniciar Sesión</button>
-                        <p class="mt-5 mb-3 text-muted">
-                            <a id="forgot-password" href="#">¿Ha olvidado su contraseña?</a>
-                        </p>
+
+                    </div>
+                    <div class="mt-5">
+                        <router-link to="/home" class="button mt-5 mb-3 text-muted"
+                            style="text-decoration: none; ">
+                            ¿Quieres ser nuestro paciente, haz click aquí?
+                        </router-link>
                     </div>
                 </article>
             </section>
@@ -29,10 +33,11 @@ import { useAuthStore } from '../../service/stores/auth';
 import { useRouter } from 'vue-router';
 import TextField from '@/components/general/atoms/TextField.vue'
 import { toast } from 'vue3-toastify';
+import NavigationLink from '@/components/general/atoms/NavigationLink.vue'
 
 export default defineComponent({
     components: {
-        TextField
+        TextField, NavigationLink
     },
     setup() {
         const router = useRouter();
@@ -65,10 +70,10 @@ export default defineComponent({
                             if (user.role === 'ADMIN') {
                                 itsUserActive ? router.push('profesionals') : router.push('/')
                             } else {
-                                itsUserActive ? router.push('home') : router.push('/')
+                                itsUserActive ? router.push('info_patient') : router.push('/')
                             }
                         } else {
-                            toast.warning("Problemas al logearse", {
+                            toast.warning("contraseña o nombre de usuario incorrecto", {
                                 autoClose: 4000,
                             });
                         }

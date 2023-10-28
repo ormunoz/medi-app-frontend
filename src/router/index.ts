@@ -3,6 +3,8 @@ import LoginView from '../views/auth/LoginView.vue';
 import ProfesionalView from '../views/menu/ProfesionalView.vue'
 import PatientView from '../views/menu/PatientView.vue'
 import QuestionView from '../views/menu/QuestionView.vue'
+import HomeView from '../views/menuPatents/HomeView.vue'
+import InfoPatientView from '../views/menuPatents/InfoPatientView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,6 +27,18 @@ const routes: Array<RouteRecordRaw> = [
     name: 'questions',
     component: QuestionView
   },
+  {
+    path: '/home',
+    name: 'home',
+    component: HomeView
+  },
+  {
+    path: '/info_patient',
+    name: 'info_patient',
+    component: InfoPatientView
+  },
+
+
   // {
   //   path: '/about',
   //   name: 'about',
