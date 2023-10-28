@@ -13,7 +13,6 @@
                         </div>
                         <div>
                             <strong>Opción seleccionada:</strong> {{ item.option.text }}
-                            <strong>puntaje Individual :</strong> {{ item.option.score }}
                         </div>
                         <div>
                             <strong>puntaje Individual :</strong> {{ item.option.score }}
