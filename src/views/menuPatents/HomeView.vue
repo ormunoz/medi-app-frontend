@@ -100,9 +100,6 @@ export default defineComponent({
                 const response = await questionService.getQuestion();
                 if (response.code === 200 && response.data) {
                     questionOption.value = response.data.data;
-                    console.log(questionOption.value);
-                } else {
-                    console.log("No hay preguntas disponibles");
                 }
             } catch (error) {
                 console.error(error);

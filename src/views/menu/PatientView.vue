@@ -14,6 +14,7 @@ import TableComponent from '@/components/general/molecule/TableComponent.vue';
 import { UserService } from "../../service/users/UserServices";
 import { Profesional } from "@/service/users/types";
 import ModalPatientComponent from "../../components/general/molecule/ModalPatientComponent.vue"
+import { toast } from 'vue3-toastify';
 
 export default {
     name: 'TrainingList',
@@ -46,18 +47,22 @@ export default {
                             especiality: item.profesional ? item.profesional.especiality : 'No Registrado'
                         }));
                     } else {
-                        console.log("No hay profesionales registrados");
+                        toast.info("No hay profesionales registrados", {
+                            autoClose: 4000,
+                        });
                     }
                 } else {
-                    console.log("Error al obtener los miembros del comité");
+                    toast.info("Error al obtener a los profesionales", {
+                        autoClose: 4000,
+                    });
                 }
             } catch (error) {
                 console.error(error);
             }
         };
-        
+
         onMounted(loadData);
-        
+
         const listTable = async (registro: any) => {
             title.value = 'Datos del paciente'
             const response = await userService.getUserOption(registro.id);

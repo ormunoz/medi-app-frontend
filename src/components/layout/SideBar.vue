@@ -35,6 +35,7 @@ import NavigationLink from '@/components/general/atoms/NavigationLink.vue'
 import { AuthService } from "@/service/auth/AuthServices";
 import { useAuthStore } from "@/service/stores/auth";
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
 export default defineComponent({
     components: { NavigationLink },
@@ -55,7 +56,9 @@ export default defineComponent({
                         authStore.logout()
                         router.push('/')
                     } else {
-                        console.log('no se pudo hacer logout');
+                        toast.info("Error al hacer Logout", {
+                            autoClose: 4000,
+                        });
                     }
                 })
         }

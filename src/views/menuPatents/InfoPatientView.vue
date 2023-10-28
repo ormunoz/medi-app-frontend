@@ -20,6 +20,7 @@ import { ref, onMounted } from 'vue'
 import { UserService } from "../../service/users/UserServices";
 import { patientOne } from "@/service/users/types";
 import { useAuthStore } from "@/service/stores/auth";
+import { toast } from 'vue3-toastify';
 
 export default {
     name: 'TrainingList',
@@ -36,11 +37,11 @@ export default {
                     if (response.data) {
                         data.value = response.data.data;
                         patientDate.value = data.value;
-                    } else {
-                        console.log("No hay profesionales registrados");
                     }
                 } else {
-                    console.log("Error al obtener los miembros del comité");
+                    toast.warning("error al obtener al usuario logeado", {
+                        autoClose: 4000,
+                    });
                 }
             } catch (error) {
                 console.error(error);

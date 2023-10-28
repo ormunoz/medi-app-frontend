@@ -14,8 +14,7 @@
 
                     </div>
                     <div class="mt-5">
-                        <router-link to="/home" class="button mt-5 mb-3 text-muted"
-                            style="text-decoration: none; ">
+                        <router-link to="/home" class="button mt-5 mb-3 text-muted" style="text-decoration: none; ">
                             ¿Quieres ser nuestro paciente, haz click aquí?
                         </router-link>
                     </div>
@@ -57,11 +56,14 @@ export default defineComponent({
 
         const login = async () => {
             const verification = verifyForm();
-            if (verification === 1 || verification === 2) console.log(verification === 1 ? 'debe ingresar un rut' : 'debe ingresar una contraseña')
+            toast.info(
+                verification != 0 && verification == 1? "Debe ingresar un rut" : "Debe ingresar una contraseña",
+                { autoClose: 4000 }
+            );
+       
             if (verification === 0) {
                 await authService.login(userLogin.value)
                     .then(async (response) => {
-                        console.log(response)
                         if (response.code === 200) {
                             const { token, user } = response.data.data;
                             authStore.setUser(user)

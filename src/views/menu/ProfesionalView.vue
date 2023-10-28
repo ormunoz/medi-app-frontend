@@ -1,7 +1,7 @@
 <template>
     <main id="HomeView" class="no-scroll">
         <TableComponent :items="trainingRecords" :order="true" :columns="columns" :showButtons="showButtons"
-            :searchTableData=searchTableData :itsAdmin=true :buttons="buttons"  @add="addProfesional" />
+            :searchTableData=searchTableData :itsAdmin=true :buttons="buttons" @add="addProfesional" />
 
         <ModalProfesionalComponent v-if="showModal" @close="closeModal" :action="action" :title="title"
             :data="sendProfesional">
@@ -46,10 +46,14 @@ export default {
                         trainingRecords.value = data;
                         trainingRecords.value = data.map((item: any) => ({ ...item, rut: item.user.rut }));
                     } else {
-                        console.log("No hay profesionales registrados");
+                        toast.warning("error al obtener a los profesionales", {
+                            autoClose: 4000,
+                        });
                     }
                 } else {
-                    console.log("Error al obtener los miembros del comité");
+                    toast.warning("error al obtener a los profesionales", {
+                        autoClose: 4000,
+                    });
                 }
             } catch (error) {
                 console.error(error);
@@ -101,7 +105,7 @@ export default {
 
         const closeModal = () => {
             showModal.value = false
-            sendProfesional.value=[]
+            sendProfesional.value = []
             loadData()
         }
 

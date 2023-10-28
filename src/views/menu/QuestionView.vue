@@ -54,10 +54,14 @@ export default {
                         });
                         questionOption.value = data;
                     } else {
-                        console.log("No hay profesionales registrados");
+                        toast.warning("No hay preguntas registradas", {
+                            autoClose: 4000,
+                        });
                     }
                 } else {
-                    console.log("Error al obtener los miembros del comité");
+                    toast.warning("Error al obtener las preguntas", {
+                        autoClose: 4000,
+                    });
                 }
             } catch (error) {
                 console.error(error);

@@ -33,7 +33,6 @@ export class UserService extends AuthenticatedService {
     }
 
     async addPatient(profesionalAdd: userRegister) {
-        console.log(profesionalAdd)
         const url = `${getEnvConfig().apiURL}/api/v1/auth/register`
         return getResponse(url, undefined, "POST", keysToSnake(profesionalAdd))
 

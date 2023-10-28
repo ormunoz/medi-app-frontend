@@ -40,7 +40,6 @@ export default defineComponent({
       }
     });
 
-    console.log(isLoggedIn)
     const isLoginOrRegisterRoute = computed(() => {
       return router.currentRoute.value.name === "login";
     });
