@@ -10,7 +10,7 @@
                         <h1 class="h3 mb-3 fw-normal radio-question">Registro de Paciente</h1>
                         <div class="row">
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.rut" type="text" label="Rut o Usuario" placeholder="Rut" />
+                                <TextField v-model="userRegister.rut" type="text" label="Rut" placeholder="Rut" />
                             </div>
                             <div class="col-md-3">
                                 <TextField v-model="userRegister.name" type="text" label="Nombre" placeholder="Nombre" />
