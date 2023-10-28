@@ -154,6 +154,7 @@ export default {
 
         const closeModal = () => {
             showModal.value = false
+            questionOptionAdd.value = []
             loadData()
         }
 
