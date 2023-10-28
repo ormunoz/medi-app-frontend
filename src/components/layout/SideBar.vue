@@ -121,7 +121,7 @@ aside {
 
             &:hover {
                 .material-icons {
-                    color: var(--primary);
+                    color: var(--primary-alt);
                     transform: translateX(0.5rem);
                 }
             }
@@ -174,7 +174,7 @@ aside {
 
             &.router-link-exact-active {
                 background-color: var(--dark-alt);
-                border-right: 5px solid var(--primary);
+                border-right: 5px solid var(--primary-alt);
 
                 .material-icons,
                 .text {

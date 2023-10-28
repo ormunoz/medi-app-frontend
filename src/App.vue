@@ -58,7 +58,7 @@ export default defineComponent({
 
 <style lang="scss">
 :root {
-  --primary: rgb(88, 240, 194);
+  --primary: rgb(255, 255, 255);
   --primary-alt: #22c55e;
   --grey: #64748b;
   --dark: #1e293b;
