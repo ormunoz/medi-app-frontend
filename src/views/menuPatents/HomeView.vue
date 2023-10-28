@@ -109,29 +109,37 @@ export default defineComponent({
         onMounted(loadData);
 
         const RegisterUser = async () => {
+            let countOption = 0
             const selectedScores = userRegister.value.option.map(optionId => {
                 const selectedOption = questionOption.value
                     .map((question: { option: any; }) => question.option)
                     .flat()
                     .find((option: { id: any; }) => option.id === optionId);
+                countOption += 1
                 return selectedOption ? selectedOption.score : 0;
             });
-
             const totalScore = selectedScores.reduce((total, score) => total + score, 0);
             userRegister.value.totalScore = totalScore;
-            const response = await userService.addPatient(userRegister.value);
-            if (response.code == 200) {
-                toast.success("Paciente Registrado. Ahora volverá al Login.", {
-                    autoClose: 4000,
-                });
-                setTimeout(() => {
-                    router.push('/');
-                }, 4000);
+            if (countOption == 5) {
+                const response = await userService.addPatient(userRegister.value);
+                if (response.code == 200) {
+                    toast.success("Paciente Registrado. Ahora volverá al Login.", {
+                        autoClose: 4000,
+                    });
+                    setTimeout(() => {
+                        router.push('/');
+                    }, 4000);
+                } else {
+                    toast.warning("Debe llenar todos los campos o rut ingresado ya existe", {
+                        autoClose: 4000,
+                    });
+                }
             } else {
-                toast.warning("Debe llenar todos los campos o rut ingresado ya existe", {
+                toast.warning("Debe llenar todas las opciones ", {
                     autoClose: 4000,
                 });
             }
+
         };
 
         const Back = () => {
