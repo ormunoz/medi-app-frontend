@@ -10,19 +10,18 @@
                 </div>
                 <div class="col">
                     <div class="card mx-auto p-4 mt-2" style="max-width: 360px">
-                        <p class="text-center"><b>Rut y/o Usuario: </b>{{ rut }}</p>
-                        <p class="text-center"><b>Nombre y Apellido: </b>{{ namePatient }} {{ lastName }}</p>
+                        <p class="text-center"><b>Rut and/or User: </b>{{ rut }}</p>
+                        <p class="text-center"><b>Name and Last Name: </b>{{ namePatient }} {{ lastName }}</p>
                         <p class="text-center"><b>Email: </b>{{ email }}</p>
-                        <p class="text-center"><b>Ciudad: </b>{{ city }}</p>
-                        <p class="text-center"><b>Profesional Asignado: </b> {{ nameProfesional }} {{ lastNameProfesional }}</p>
-                        <p class="text-center"><b>Especialidad: </b> {{ especiality }}</p>
+                        <p class="text-center"><b>City: </b>{{ city }}</p>
+                        <p class="text-center"><b>Assigned Professional: </b> {{ nameProfesional }} {{ lastNameProfesional }}</p>
+                        <p class="text-center"><b>Specialty: </b> {{ especiality }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-  
 
 <script lang="ts">
 import { ref, onMounted } from 'vue'
@@ -47,23 +46,24 @@ export default {
         const lastNameProfesional = ref<string>();
         const especiality = ref<string>();
 
+        // Load user data based on the user's ID
         const loadData = async () => {
             try {
                 const response = await userService.getOneUser(userId.value);
                 if (response.code === 200) {
                     if (response.data) {
                         const data = response.data.data;
-                        rut.value = data.rut
-                        namePatient.value = data.patients[0].name
-                        lastName.value = data.patients[0].lastName
-                        email.value = data.patients[0].email
-                        city.value = data.patients[0].city
-                        nameProfesional.value = data.patients[0].profesional.name
-                        lastNameProfesional.value = data.patients[0].profesional.lastName
-                        especiality.value = data.patients[0].profesional.especiality
+                        rut.value = data.rut;
+                        namePatient.value = data.patients[0].name;
+                        lastName.value = data.patients[0].lastName;
+                        email.value = data.patients[0].email;
+                        city.value = data.patients[0].city;
+                        nameProfesional.value = data.patients[0].profesional.name;
+                        lastNameProfesional.value = data.patients[0].profesional.lastName;
+                        especiality.value = data.patients[0].profesional.especiality;
                     }
                 } else {
-                    toast.warning("error al obtener al usuario logeado", {
+                    toast.warning("Error getting the logged-in user", {
                         autoClose: 4000,
                     });
                 }
@@ -88,7 +88,6 @@ export default {
     }
 }
 </script>
-  
 
 <style scoped>
 body {

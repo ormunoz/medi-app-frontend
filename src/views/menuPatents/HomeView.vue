@@ -7,17 +7,17 @@
             <section class="container">
                 <article class="row">
                     <div class="col-md-9 offset-md-2">
-                        <h1 class="h3 mb-3 fw-normal radio-question">Registro de Paciente</h1>
+                        <h1 class="h3 mb-3 fw-normal radio-question">Patient Registration</h1>
+                        <!-- Input fields for user registration -->
                         <div class="row">
                             <div class="col-md-3">
                                 <TextField v-model="userRegister.rut" type="text" label="Rut" placeholder="Rut" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.name" type="text" label="Nombre" placeholder="Nombre" />
+                                <TextField v-model="userRegister.name" type="text" label="Name" placeholder="Name" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.last_name" type="text" label="Apellido"
-                                    placeholder="Apellido" />
+                                <TextField v-model="userRegister.last_name" type="text" label="Last Name" placeholder="Last Name" />
                             </div>
                         </div>
                         <div class="row">
@@ -25,31 +25,28 @@
                                 <TextField v-model="userRegister.email" type="text" label="Email" placeholder="Email" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.city" type="text" label="Ciudad" placeholder="Ciudad" />
+                                <TextField v-model="userRegister.city" type="text" label="City" placeholder="City" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.password" type="password" label="Contraseña"
-                                    placeholder="Password" />
+                                <TextField v-model="userRegister.password" type="password" label="Password" placeholder="Password" />
                             </div>
                         </div>
                         <hr>
-
+                        <!-- Loop through and display radio questions and options -->
                         <div class="row options-container" v-for="(question, qIndex) in questionOption" :key="question.id">
                             <h4 class="radio-question">{{ question.question }}</h4>
                             <div class="options-container">
                                 <div v-for="option in question.option" :key="option.id" class="radio-option">
-                                    <input type="radio" :id="`option${option.id}`" :value="option.id"
-                                        v-model="userRegister.option[qIndex]">
+                                    <input type="radio" :id="`option${option.id}`" :value="option.id" v-model="userRegister.option[qIndex]">
                                     <label :for="`option${option.id}`">{{ option.text }}</label>
                                 </div>
                             </div>
                         </div>
-
-
+                        <!-- Buttons for user registration and returning to the login page -->
                         <div class="row">
                             <div class="col-md-6">
                                 <button class="w-100 btn btn-lg btn-info mt-4" @click="RegisterUser" :disabled="loading">
-                                    {{ loading ? '' : 'Registrarse' }}
+                                    {{ loading ? '' : 'Register' }}
                                     <div class="spinner-border text-info" v-if="loading" role="status">
                                         <span class="sr-only"></span>
                                     </div>
@@ -57,24 +54,21 @@
                             </div>
                             <div class="col-md-6">
                                 <router-link to="/" class="button text-muted" style="text-decoration: none;">
-                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Volver al
-                                        Login</button>
+                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Back to Login</button>
                                 </router-link>
                             </div>
                         </div>
-
                     </div>
                 </article>
             </section>
         </aside>
     </header>
 </template>
-  
-  
+
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue';
 import { userRegister } from '@/service/auth/types';
-import TextField from '@/components/general/atoms/TextField.vue'
+import TextField from '@/components/general/atoms/TextField.vue';
 import { toast } from 'vue3-toastify';
 import { QuestionService } from "../../service/questions/QuestionServices";
 import { UserService } from "@/service/users/UserServices";
@@ -89,7 +83,7 @@ export default defineComponent({
         const userService = new UserService();
         const questionService = new QuestionService();
         const questionOption = ref<any>({});
-        const loading = ref<boolean>(false)
+        const loading = ref<boolean>(false);
         const userRegister = ref<userRegister>({
             rut: '',
             password: '',
@@ -102,6 +96,7 @@ export default defineComponent({
             totalScore: 0,
         });
 
+        // Load questions for registration
         const loadData = async () => {
             try {
                 const response = await questionService.getQuestion();
@@ -115,15 +110,16 @@ export default defineComponent({
 
         onMounted(loadData);
 
+        // Register a new user
         const RegisterUser = async () => {
-            loading.value = true
-            let countOption = 0
+            loading.value = true;
+            let countOption = 0;
             const selectedScores = userRegister.value.option.map(optionId => {
                 const selectedOption = questionOption.value
                     .map((question: { option: any; }) => question.option)
                     .flat()
                     .find((option: { id: any; }) => option.id === optionId);
-                countOption += 1
+                countOption += 1;
                 return selectedOption ? selectedOption.score : 0;
             });
             const totalScore = selectedScores.reduce((total, score) => total + score, 0);
@@ -131,29 +127,31 @@ export default defineComponent({
             if (countOption == 5) {
                 const response = await userService.addPatient(userRegister.value);
                 if (response.code == 200) {
-                    toast.success("Paciente Registrado. Ahora volverá al Login.", {
+                    toast.success("Patient Registered. You will now be redirected to the Login page.", {
                         autoClose: 4000,
                     });
-                    loading.value = false
+                    loading.value = false;
                     setTimeout(() => {
                         router.push('/');
                     }, 4000);
                 } else {
-                    toast.warning("Debe llenar todos los campos o rut ingresado ya existe", {
+                    toast.warning("Please fill in all fields or the entered Rut already exists", {
                         autoClose: 4000,
                     });
                 }
             } else {
-                toast.warning("Debe llenar todas las opciones ", {
+                toast.warning("Please fill in all the options", {
                     autoClose: 4000,
                 });
             }
-            loading.value = false
+            loading.value = false;
         };
 
+        // Go back to the login page
         const Back = () => {
             router.push('/');
         }
+
         return { userRegister, RegisterUser, questionOption, Back, loading };
     }
 });

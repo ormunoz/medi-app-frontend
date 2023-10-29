@@ -1,18 +1,21 @@
 <template>
     <main id="HomeView" class="no-scroll">
+        <!-- Display a table with professional records if not loading -->
         <TableComponent v-if="!loading" :items="trainingRecords" :order="true" :columns="columns" :showButtons="showButtons"
-            :searchTableData=searchTableData :itsAdmin=true :buttons="buttons" @add="addProfesional" />
-        <div style=" display: flex; justify-content: center;">
+            :searchTableData="searchTableData" :itsAdmin=true :buttons="buttons" @add="addProfesional" />
+        <!-- Display a loading spinner if loading data -->
+        <div style="display: flex; justify-content: center;">
             <div class="spinner-border text-info" v-if="loading">
                 <span class="sr-only"></span>
             </div>
         </div>
+        <!-- Display a professional information modal when showModal is true -->
         <ModalProfesionalComponent v-if="showModal" @close="closeModal" :action="action" :title="title"
             :data="sendProfesional">
         </ModalProfesionalComponent>
     </main>
 </template>
-  
+
 <script lang="ts">
 import { ref, computed, onMounted, inject } from 'vue'
 import TableComponent from '@/components/general/molecule/TableComponent.vue';
@@ -28,7 +31,6 @@ export default {
         TableComponent, ModalProfesionalComponent
     },
     setup() {
-
         const userService = new UserService();
         const showModal = ref<boolean>(false);
         const loading = ref<boolean>(false);
@@ -37,14 +39,14 @@ export default {
         const sendProfesional = ref<ProfesionalAdd[]>([]);
         const action = ref<string>('');
         const title = ref<string>('');
-        const columns = ref([{ name: 'rut', label: 'Rut o Usuario' }, { name: 'name', label: 'Nombre' }, { name: 'lastName', label: 'Apellido' }, { name: 'especiality', label: 'Especialidad' },
-        { name: 'minScore', label: 'Puntaje Minimo' }, { name: 'maxScore', label: 'Puntaje Maximo' }])
+        const columns = ref([{ name: 'rut', label: 'Rut or User' }, { name: 'name', label: 'Name' }, { name: 'lastName', label: 'Last Name' }, { name: 'especiality', label: 'Speciality' },
+        { name: 'minScore', label: 'Minimum Score' }, { name: 'maxScore', label: 'Maximum Score' }])
         const searchTableData = ref(['name', 'lastName', 'especiality'])
 
-
+        // Load professional data when the component is mounted
         const loadData = async () => {
             try {
-                loading.value=true
+                loading.value = true
                 const response = await userService.getProfesional();
                 if (response.code === 200) {
                     if (response.data) {
@@ -52,65 +54,66 @@ export default {
                         trainingRecords.value = data;
                         trainingRecords.value = data.map((item: any) => ({ ...item, rut: item.user.rut }));
                     } else {
-                        toast.warning("error al obtener a los profesionales", {
+                        toast.warning("Error fetching professionals", {
                             autoClose: 4000,
                         });
                     }
                 } else {
-                    toast.warning("error al obtener a los profesionales", {
+                    toast.warning("Error fetching professionals", {
                         autoClose: 4000,
                     });
                 }
-                loading.value=false
+                loading.value = false
             } catch (error) {
                 loading.value = false
                 console.error(error);
             }
         };
 
+        // Execute the load data function when the component is mounted
         onMounted(loadData);
 
+        // Function to add a professional
         const addProfesional = () => {
             action.value = 'add'
-            title.value = 'Agregar Profesional'
+            title.value = 'Add Professional'
             showModal.value = true
         }
 
+        // Function to update professional data
         const updateTable = (registro: any) => {
             action.value = 'edit'
-            title.value = 'Editar Profesional'
+            title.value = 'Edit Professional'
             sendProfesional.value = registro
             showModal.value = true
         }
 
+        // Function to delete a professional
         const deleteTable = async (profesional: any) => {
             const result = await $swal.fire({
-                title: '¿Estás seguro de que quieres eliminar esta este profesional?',
-                text: 'esta accion prodria perjudicar a los pacientes que tengan asociado a este profesional',
+                title: 'Are you sure you want to delete this professional?',
+                text: 'This action could impact patients associated with this professional',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'No, cancelar',
+                confirmButtonText: 'Yes, delete',
+                cancelButtonText: 'No, cancel',
             });
 
             if (result.isConfirmed) {
                 const response = await userService.deleteProfesional(profesional.user.id);
-                toast.success("Profesional eliminado con exito", {
+                toast.success("Professional deleted successfully", {
                     autoClose: 4000,
                 });
                 loadData()
             }
         }
 
-
         const buttons = ref([
-            // { id: 1, name: 'Ver', action: listTable, className: 'bg-gray-600 text-white hover:bg-gray-500 focus:bg-gray-500', iconName: 'eye' },
-            { id: 2, name: 'Editar', action: updateTable, className: 'btn btn-outline-warning me-3', iconName: 'edit' },
-            { id: 3, name: 'Eliminar', action: deleteTable, className: 'btn btn-outline-danger me-3', iconName: 'delete' }
+            { id: 2, name: 'Edit', action: updateTable, className: 'btn btn-outline-warning me-3', iconName: 'edit' },
+            { id: 3, name: 'Delete', action: deleteTable, className: 'btn btn-outline-danger me-3', iconName: 'delete' }
         ])
 
-
-
+        // Close the modal and reload the data
         const closeModal = () => {
             showModal.value = false
             sendProfesional.value = []
@@ -134,7 +137,6 @@ export default {
     }
 }
 </script>
-  
 
 <style scoped>
 body {

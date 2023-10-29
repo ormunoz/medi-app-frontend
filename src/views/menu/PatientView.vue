@@ -1,17 +1,20 @@
 <template>
     <main id="HomeView" class="no-scroll">
+        <!-- Display a table with data if not loading -->
         <TableComponent v-if="!loading" :items="trainingRecords" :order="true" :columns="columns" :showButtons="showButtons"
             :searchTableData=searchTableData :buttons=buttons />
-        <div style=" display: flex; justify-content: center;">
+        <!-- Display a loading spinner if loading data -->
+        <div style="display: flex; justify-content: center;">
             <div class="spinner-border text-info" v-if="loading">
                 <span class="sr-only"></span>
             </div>
         </div>
+        <!-- Display a patient information modal when showModal is true -->
         <ModalPatientComponent v-if="showModal" @close="closeModal" :action="action" :title="title" :data="patientView">
         </ModalPatientComponent>
     </main>
 </template>
-  
+
 <script lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import TableComponent from '@/components/general/molecule/TableComponent.vue';
@@ -34,11 +37,11 @@ export default {
         const showButtons = computed(() => true)
         const trainingRecords = ref<Profesional[]>([]);
         const patientView = ref<any>([]);
-        const columns = ref([{ name: 'rut', label: 'Rut' }, { name: 'name', label: 'Nombre' }, { name: 'lastName', label: 'Apellido' }, { name: 'city', label: 'Ciudad' },
-        { name: 'totalScore', label: 'Puntaje Total' }, { name: 'profesionalName', label: 'Profesional Asignado' }, { name: 'especiality', label: 'Especialidad del Profesional' }])
+        const columns = ref([{ name: 'rut', label: 'Rut' }, { name: 'name', label: 'Name' }, { name: 'lastName', label: 'Last Name' }, { name: 'city', label: 'City' },
+        { name: 'totalScore', label: 'Total Score' }, { name: 'profesionalName', label: 'Assigned Professional' }, { name: 'especiality', label: 'Professional Speciality' }])
         const searchTableData = ref(['name', 'lastName', 'especiality'])
 
-
+        // Load patient data when the component is mounted
         const loadData = async () => {
             try {
                 loading.value = true
@@ -49,45 +52,47 @@ export default {
                         trainingRecords.value = data;
                         trainingRecords.value = data.map((item: any) => ({
                             ...item, rut: item.user.rut,
-                            profesionalName: item.profesional ? item.profesional.name + ' ' + item.profesional.lastName : 'No Registrado',
-                            especiality: item.profesional ? item.profesional.especiality : 'No Registrado'
+                            profesionalName: item.profesional ? item.profesional.name + ' ' + item.profesional.lastName : 'Not Registered',
+                            especiality: item.profesional ? item.profesional.especiality : 'Not Registered'
                         }));
                     } else {
-                        toast.info("No hay profesionales registrados", {
+                        toast.info("No registered professionals", {
                             autoClose: 4000,
                         });
                     }
                 } else {
-                    toast.info("Error al obtener a los profesionales", {
+                    toast.info("Error fetching professionals", {
                         autoClose: 4000,
                     });
                 }
                 loading.value = false
-
             } catch (error) {
                 loading.value = false
                 console.error(error);
             }
         };
 
+        // Execute the load data function when the component is mounted
         onMounted(loadData);
 
-        const listTable = async (registro: any) => {
-            title.value = 'Datos del paciente'
-            const response = await userService.getUserOption(registro.id);
+        // Function to display patient information modal
+        const listTable = async (record: any) => {
+            title.value = 'Patient Information'
+            const response = await userService.getUserOption(record.id);
             patientView.value = response.data.data
             showModal.value = true
         }
 
         const buttons = ref([
-            { id: 1, name: 'Ver', action: listTable, className: 'btn btn-outline-secondary me-3', iconName: 'preview' },
+            { id: 1, name: 'View', action: listTable, className: 'btn btn-outline-secondary me-3', iconName: 'preview' },
         ])
 
-
+        // Close the modal and reload the data
         const closeModal = () => {
             showModal.value = false
             loadData()
         }
+
         return {
             trainingRecords,
             columns,
@@ -103,7 +108,6 @@ export default {
     }
 }
 </script>
-  
 
 <style scoped>
 body {

@@ -7,7 +7,6 @@
   </div>
 </template>
 
-
 <script lang="ts">
 import { defineComponent, computed, ref } from 'vue';
 import { useRouter } from "vue-router";
@@ -22,6 +21,8 @@ export default defineComponent({
     const router = useRouter();
     const authService = new AuthService()
     const admin = ref<boolean>(false);
+
+    // Check if the user is logged in and has a valid session
     const isLoggedIn: any = computed(async () => {
       const hasValidSession = await authService.hasValidUserSession();
       if (hasValidSession) {
@@ -30,19 +31,20 @@ export default defineComponent({
           return admin.value = true;
         } else {
           if (authToken?.role === 'PATIENT') {
-            admin.value = true
+            admin.value = true;
             return router.push({ name: 'info_patient' });
           } else {
-            admin.value = false
+            admin.value = false;
             return router.push({ name: '/root' });
           }
         }
       } else {
         router.push({ name: 'root' });
-        admin.value = false
+        admin.value = false;
       }
     });
 
+    // Check if the current route is the login or register route
     const isLoginOrRegisterRoute = computed(() => {
       return router.currentRoute.value.name === "/";
     });
