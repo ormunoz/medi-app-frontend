@@ -33,12 +33,12 @@ export default defineComponent({
             admin.value = true
             return router.push({ name: 'info_patient' });
           } else {
-            console.log('pasepor aui')
             admin.value = false
-            return router.push({ name: '/' });
+            return router.push({ name: '/root' });
           }
         }
       } else {
+        router.push({ name: 'root' });
         admin.value = false
       }
     });
