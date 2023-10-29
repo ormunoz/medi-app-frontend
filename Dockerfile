@@ -4,17 +4,14 @@ FROM node:20.1.0
 # Establece el directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Instala Vue CLI de forma global
-RUN npm install -g @vue/cli
-
 # Copia el archivo package.json y package-lock.json al directorio de trabajo
 COPY package*.json ./
 
-# Instala las dependencias del proyecto
-RUN npm install
-
 # Copia el resto de los archivos de tu proyecto al directorio de trabajo
 COPY . .
+
+# Instala las dependencias del proyecto
+RUN npm install
 
 # Exponer el puerto en el que se ejecutará la aplicación (ajústalo según sea necesario)
 EXPOSE 8080
