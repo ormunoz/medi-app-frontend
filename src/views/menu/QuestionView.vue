@@ -2,7 +2,7 @@
     <main id="HomeView" class="no-scroll">
         <div class="card">
             <div class="card-body">
-                <h1 class="card-title">Question Menu</h1>
+                <h1 class="card-title">Menu Preguntas Creadas</h1>
 
                 <!-- Display an accordion component for questions if not loading -->
                 <Accordion v-if="!loading" :id="questionAccordionId" :items="questionOption" dataToggle="collapse"
