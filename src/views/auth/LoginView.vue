@@ -25,7 +25,7 @@
 </template>
   
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { userLogin } from '@/service/auth/types';
 import { AuthService } from "@/service/auth/AuthServices";
 import { useAuthStore } from '../../service/stores/auth';
@@ -48,6 +48,24 @@ export default defineComponent({
             password: ''
         });
 
+        const init = async () => {
+            const hasValidSession = await authService.hasValidUserSession();
+            if (hasValidSession) {
+                const authToken = authStore.user;
+                if (authToken?.role === 'ADMIN') {
+                    return router.push({ name: 'profesionals' });
+                } else {
+                    if (authToken?.role === 'PATIENT') {
+                        return router.push({ name: 'info_patient' });
+                    } else {
+                        return router.push({ name: '/' });
+                    }
+                }
+            }
+        }
+
+        onMounted(init)
+
         const verifyForm = () => {
             if (userLogin.value.rut.length === 0) return 1
             if (userLogin.value.password.length === 0) return 2
@@ -57,10 +75,10 @@ export default defineComponent({
         const login = async () => {
             const verification = verifyForm();
             toast.info(
-                verification != 0 && verification == 1? "Debe ingresar un rut" : "Debe ingresar una contraseña",
+                verification != 0 && verification == 1 ? "Debe ingresar un rut" : "Debe ingresar una contraseña",
                 { autoClose: 4000 }
             );
-       
+
             if (verification === 0) {
                 await authService.login(userLogin.value)
                     .then(async (response) => {
