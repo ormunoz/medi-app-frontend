@@ -12,11 +12,11 @@ export interface EnvConfig {
 
 const ENV_CONFIGS: Record<EnvName, EnvConfig> = {
     production: {
-      apiURL: process.env.API_URL || 'http://localhost:5000',
+      apiURL: process.env.MEDI_APP_BACKEND_URL || 'http://localhost:5000',
       env: EnvNames.PROD,
     },
     development: {
-      apiURL: process.env.API_URL || 'http://localhost:5000',
+      apiURL: process.env.MEDI_APP_BACKEND_URL || 'http://localhost:5000',
       env: EnvNames.DEV,
     },
   };
