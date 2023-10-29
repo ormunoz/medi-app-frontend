@@ -7,11 +7,16 @@
             <section class="container">
                 <article class="row">
                     <div class="col-md-6 offset-md-3">
+
                         <h1 class="h3 mb-3 fw-normal">Inicio de sesión</h1>
                         <TextField v-model="userLogin.rut" type="text" label="Rut o Usuario" placeholder="Rut o Usuario" />
                         <TextField v-model="userLogin.password" type="password" label="Contraseña" placeholder="Password" />
-                        <button class="w-100 btn btn-lg btn-info mt-4" @click="login">Iniciar Sesión</button>
-
+                        <button class="w-100 btn btn-lg btn-info mt-4" @click="login" :disabled="loading">
+                            {{ loading ? 'Cargando...' : 'Iniciar Sesión' }}
+                        </button>
+                        <div class="spinner-border text-info" v-if="loading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
                     </div>
                     <div class="mt-5">
                         <router-link to="/home" class="button mt-5 mb-3 text-muted" style="text-decoration: none; ">
@@ -42,7 +47,7 @@ export default defineComponent({
         const router = useRouter();
         const authStore = useAuthStore();
         const authService = new AuthService()
-
+        const loading = ref<boolean>(false)
         const userLogin = ref<userLogin>({
             rut: '',
             password: ''
@@ -73,12 +78,8 @@ export default defineComponent({
         };
 
         const login = async () => {
+            loading.value = true
             const verification = verifyForm();
-            toast.info(
-                verification != 0 && verification == 1 ? "Debe ingresar un rut" : "Debe ingresar una contraseña",
-                { autoClose: 4000 }
-            );
-
             if (verification === 0) {
                 await authService.login(userLogin.value)
                     .then(async (response) => {
@@ -92,16 +93,23 @@ export default defineComponent({
                             } else {
                                 itsUserActive ? router.push('info_patient') : router.push('/')
                             }
+                            loading.value = false
                         } else {
                             toast.warning("contraseña o nombre de usuario incorrecto", {
                                 autoClose: 4000,
                             });
                         }
                     })
+            } else {
+                toast.info(
+                    verification == 1 ? "Debe ingresar un rut" : "Debe ingresar una contraseña",
+                    { autoClose: 4000 }
+                );
+                loading.value = false
             }
         };
 
-        return { userLogin, login };
+        return { userLogin, login, loading };
     }
 });
 </script>

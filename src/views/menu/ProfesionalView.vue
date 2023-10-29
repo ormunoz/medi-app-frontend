@@ -1,8 +1,12 @@
 <template>
     <main id="HomeView" class="no-scroll">
-        <TableComponent :items="trainingRecords" :order="true" :columns="columns" :showButtons="showButtons"
+        <TableComponent v-if="!loading" :items="trainingRecords" :order="true" :columns="columns" :showButtons="showButtons"
             :searchTableData=searchTableData :itsAdmin=true :buttons="buttons" @add="addProfesional" />
-
+        <div style=" display: flex; justify-content: center;">
+            <div class="spinner-border text-info" v-if="loading">
+                <span class="sr-only"></span>
+            </div>
+        </div>
         <ModalProfesionalComponent v-if="showModal" @close="closeModal" :action="action" :title="title"
             :data="sendProfesional">
         </ModalProfesionalComponent>
@@ -27,6 +31,7 @@ export default {
 
         const userService = new UserService();
         const showModal = ref<boolean>(false);
+        const loading = ref<boolean>(false);
         const showButtons = computed(() => true)
         const trainingRecords = ref<Profesional[]>([]);
         const sendProfesional = ref<ProfesionalAdd[]>([]);
@@ -39,6 +44,7 @@ export default {
 
         const loadData = async () => {
             try {
+                loading.value=true
                 const response = await userService.getProfesional();
                 if (response.code === 200) {
                     if (response.data) {
@@ -55,7 +61,9 @@ export default {
                         autoClose: 4000,
                     });
                 }
+                loading.value=false
             } catch (error) {
+                loading.value = false
                 console.error(error);
             }
         };
@@ -120,7 +128,8 @@ export default {
             closeModal,
             action,
             title,
-            sendProfesional
+            sendProfesional,
+            loading
         }
     }
 }

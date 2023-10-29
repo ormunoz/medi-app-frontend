@@ -23,8 +23,20 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" @click="closeModal" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button v-if="action == 'edit'" class="btn btn-warning me-2" @click="saveChange">Editar</button>
-                    <button v-else class="btn btn-success me-2" @click="saveChange">Agregar</button>
+                    <button v-if="action == 'edit'" class="btn btn-warning me-2" @click="saveChange" :disabled="loading">
+                        {{ loading ? '' : 'Editar' }}
+                        <div class="spinner-border text-info" v-if="loading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </button>
+
+                    <button v-else class="btn btn-success me-2" @click="saveChange" :disabled="loading">
+                        {{ loading ? '' : 'Guardar' }}
+                        <div class="spinner-border text-info" v-if="loading" role="status">
+                            <span class="sr-only"></span>
+                        </div>
+                    </button>
+
                 </div>
             </div>
         </div>
@@ -58,6 +70,7 @@ export default defineComponent({
 
         const userService = new UserService();
         const action = ref<any>(props.action || '');
+        const loading = ref<boolean>(false);
         const profesionalAdd = ref<ProfesionalAdd>({
             id: props.data?.id || 0,
             user_id: props.data?.user?.id || 0,
@@ -72,6 +85,7 @@ export default defineComponent({
         });
 
         const saveChange = async () => {
+            loading.value = true
             if (profesionalAdd.value.minScore >= profesionalAdd.value.maxScore) {
                 toast.warning("El puntaje minimo debe ser inferior al maximo", {
                     autoClose: 4000,
@@ -83,6 +97,7 @@ export default defineComponent({
                         toast.success("Profesional Registrado", {
                             autoClose: 4000,
                         });
+                        loading.value = false
                         emit('close');
                     } else {
                         toast.warning("Debe llenar todos los campos, no debe existir un rut o especialidad igual", {
@@ -95,6 +110,7 @@ export default defineComponent({
                         toast.success("Profesional Actualizado", {
                             autoClose: 4000,
                         });
+                        loading.value = false
                         emit('close');
                     } else {
                         toast.warning("Debe llenar todos los campos, no debe existir un rut o especialidad igual", {
@@ -103,7 +119,7 @@ export default defineComponent({
                     }
                 }
             }
-
+            loading.value = false
         }
 
         const closeModal = (event: any) => {
@@ -115,7 +131,8 @@ export default defineComponent({
         return {
             closeModal,
             saveChange,
-            profesionalAdd
+            profesionalAdd,
+            loading
         }
 
     }

@@ -1,13 +1,19 @@
 <template>
     <main id="HomeView" class="no-scroll">
+
         <div class="card">
             <div class="card-body">
                 <h1 class="card-title">Menu de Preguntas</h1>
-                <Accordion :id="questionAccordionId" :items="questionOption" dataToggle="collapse" @edit-option="editOption"
-                    @delete-option="deleteOption" @add-option="addOption" @add-question="addQuestion"
-                    @edit-question="editQuestion" @delete-question="deleteQuestion">
-                </Accordion>
 
+                <Accordion v-if="!loading" :id="questionAccordionId" :items="questionOption" dataToggle="collapse"
+                    @edit-option="editOption" @delete-option="deleteOption" @add-option="addOption"
+                    @add-question="addQuestion" @edit-question="editQuestion" @delete-question="deleteQuestion">
+                </Accordion>
+                <div style=" display: flex; justify-content: center;">
+                    <div class="spinner-border text-info" v-if="loading">
+                        <span class="sr-only"></span>
+                    </div>
+                </div>
                 <ModalComponent v-if="showModal" @close="closeModal" :action="action" :title="title"
                     :data="questionOptionAdd" :type="type" :questionId="questionId">
                 </ModalComponent>
@@ -40,11 +46,13 @@ export default {
         const type = ref<string>();
         const questionId = ref<number>();
         const showModal = ref<boolean>(false);
+        const loading = ref<boolean>(false);
         const questionOption = ref<QuestionOption[]>([]);
         const questionOptionAdd = ref<QuestionOptionAdd[]>();
 
         const loadData = async () => {
             try {
+                loading.value = true
                 const response = await questionService.getQuestion();
                 if (response.code === 200) {
                     if (response.data) {
@@ -63,7 +71,9 @@ export default {
                         autoClose: 4000,
                     });
                 }
+                loading.value = false
             } catch (error) {
+                loading.value = false
                 console.error(error);
             }
         };
@@ -178,7 +188,8 @@ export default {
             questionOptionAdd,
             type,
             closeModal,
-            questionId
+            questionId,
+            loading
         };
     },
 };

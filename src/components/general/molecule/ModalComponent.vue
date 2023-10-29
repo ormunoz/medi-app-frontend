@@ -12,8 +12,21 @@
             <TextField v-model="question" type="text" label="Escribir Pregunta" placeholder="Escribir Pregunta" />
             <div class="modal-footer">
               <button type="button" @click="closeModal" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button v-if="action == 'edit'" class="btn btn-warning me-2 " @click="saveChange">Editar</button>
-              <button v-else class="btn btn-success me-2 " @click="saveChange">Agregar</button>
+
+              <button v-if="action == 'edit'" class="btn btn-warning me-2 " @click="saveChange" :disabled="loading">
+                {{ loading ? '' : 'Editar' }}
+                <div class="spinner-border text-info" v-if="loading" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </button>
+
+              <button v-else class="btn btn-success me-2 " @click="saveChange" :disabled="loading">
+                {{ loading ? '' : 'Agregar' }}
+                <div class="spinner-border text-info" v-if="loading" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </button>
+
             </div>
           </slot>
           <slot v-else-if="type === 'option'">
@@ -25,8 +38,21 @@
             </div>
             <div class="modal-footer">
               <button type="button" @click="closeModal" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button v-if="action == 'edit'" class="btn btn-warning me-2 " @click="saveChange">Editar</button>
-              <button v-else class="btn btn-success me-2 " @click="saveChange">Agregar</button>
+              
+              <button v-if="action == 'edit'" class="btn btn-warning me-2 " @click="saveChange" :disabled="loading">
+                {{ loading ? '' : 'Editar' }}
+                <div class="spinner-border text-info" v-if="loading" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </button>
+
+              <button v-else class="btn btn-success me-2 " @click="saveChange" :disabled="loading">
+                {{ loading ? '' : 'Guardar' }}
+                <div class="spinner-border text-info" v-if="loading" role="status">
+                  <span class="sr-only"></span>
+                </div>
+              </button>
+
             </div>
           </slot>
         </div>
@@ -72,10 +98,12 @@ export default defineComponent({
     const text = ref<string>(props.data?.text || 0);
     const questionId = ref<number>(props.questionId || 0);
     const id = ref<number>(props.data?.id || 0);
+    const loading = ref<boolean>(false)
 
 
 
     const saveChange = async () => {
+      loading.value = true
       if (props.action == 'edit') {
         if (props.type == 'option') {
           const response = await questionService.optionUpdate(id.value, score.value, text.value, indice.value);
@@ -83,6 +111,7 @@ export default defineComponent({
             toast.success("option agregada correctamente", {
               autoClose: 4000,
             });
+            loading.value = false
             emit('close');
           } else {
             toast.warning("Debe llenar todos los campos, no debe existir la alternativa para esta pregunta", {
@@ -95,9 +124,10 @@ export default defineComponent({
             toast.success("pregunta actualizada correctamente", {
               autoClose: 4000,
             });
+            loading.value = false
             emit('close');
           } else {
-            toast.warning("Debe llenar todos los campos, no debe existir la pregunta", {
+            toast.warning("Debe llenar todos los campos, la pregunta no debe repetirse", {
               autoClose: 4000,
             });
           }
@@ -109,9 +139,10 @@ export default defineComponent({
             toast.success("option agregada correctamente", {
               autoClose: 4000,
             });
+            loading.value = false
             emit('close');
           } else {
-            toast.warning("Debe llenar todos los campos, no debe existir la alternativa para esta pregunta", {
+            toast.warning("Debe llenar todos los campos, no debe repetirse la alternativa para esta pregunta", {
               autoClose: 4000,
             });
           }
@@ -121,6 +152,7 @@ export default defineComponent({
             toast.success("pregunta agregada correctamente", {
               autoClose: 4000,
             });
+            loading.value = false
             emit('close');
           } else {
             toast.warning("Debe llenar todos los campos, no debe existir la pregunta", {
@@ -129,6 +161,7 @@ export default defineComponent({
           }
         }
       }
+      loading.value = false
     }
 
     const closeModal = (event: any) => {
@@ -143,7 +176,8 @@ export default defineComponent({
       question,
       score,
       text,
-      indice
+      indice,
+      loading
     }
 
   }

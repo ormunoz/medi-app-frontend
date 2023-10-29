@@ -48,15 +48,21 @@
 
                         <div class="row">
                             <div class="col-md-6">
-                                <button class="w-100 btn btn-lg btn-info mt-4" @click="RegisterUser">Registrarse</button>
+                                <button class="w-100 btn btn-lg btn-info mt-4" @click="RegisterUser" :disabled="loading">
+                                    {{ loading ? '' : 'Registrarse' }}
+                                    <div class="spinner-border text-info" v-if="loading" role="status">
+                                        <span class="sr-only"></span>
+                                    </div>
+                                </button>
                             </div>
                             <div class="col-md-6">
-                                <router-link to="/" class="button text-muted" style="text-decoration: none; ">
+                                <router-link to="/" class="button text-muted" style="text-decoration: none;">
                                     <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Volver al
                                         Login</button>
                                 </router-link>
                             </div>
                         </div>
+
                     </div>
                 </article>
             </section>
@@ -83,6 +89,7 @@ export default defineComponent({
         const userService = new UserService();
         const questionService = new QuestionService();
         const questionOption = ref<any>({});
+        const loading = ref<boolean>(false)
         const userRegister = ref<userRegister>({
             rut: '',
             password: '',
@@ -109,6 +116,7 @@ export default defineComponent({
         onMounted(loadData);
 
         const RegisterUser = async () => {
+            loading.value = true
             let countOption = 0
             const selectedScores = userRegister.value.option.map(optionId => {
                 const selectedOption = questionOption.value
@@ -126,6 +134,7 @@ export default defineComponent({
                     toast.success("Paciente Registrado. Ahora volverá al Login.", {
                         autoClose: 4000,
                     });
+                    loading.value = false
                     setTimeout(() => {
                         router.push('/');
                     }, 4000);
@@ -139,13 +148,13 @@ export default defineComponent({
                     autoClose: 4000,
                 });
             }
-
+            loading.value = false
         };
 
         const Back = () => {
             router.push('/');
         }
-        return { userRegister, RegisterUser, questionOption, Back };
+        return { userRegister, RegisterUser, questionOption, Back, loading };
     }
 });
 </script>
