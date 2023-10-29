@@ -66,12 +66,12 @@ export default {
                         });
                         questionOption.value = data;
                     } else {
-                        toast.warning("No questions are registered", {
+                        toast.warning("No hay preguntas registradas", {
                             autoClose: 4000,
                         });
                     }
                 } else {
-                    toast.warning("Error fetching questions", {
+                    toast.warning("Error en el servidor al obtener las preguntas.", {
                         autoClose: 4000,
                     });
                 }
@@ -112,12 +112,12 @@ export default {
         // Function to add a new question
         const addQuestion = (countOption: number) => {
             if (countOption >= 5) {
-                toast.warning("You cannot add more than 5 questions", {
+                toast.warning("No puedes agregar más de 5 preguntas", {
                     autoClose: 4000,
                 });
             } else {
                 action.value = 'add';
-                title.value = 'Create Question';
+                title.value = 'Crear Pregunta';
                 type.value = 'question';
                 showModal.value = true;
             }
@@ -126,12 +126,12 @@ export default {
         // Function to add a new option to a question
         const addOption = (countOption: number, question: number) => {
             if (countOption >= 3) {
-                toast.warning("You cannot add more than 3 options", {
+                toast.warning("No puedes agregar más de 3 Alternativas por pregunta", {
                     autoClose: 4000,
                 });
             } else {
                 action.value = 'add';
-                title.value = 'Add Option';
+                title.value = 'Agregar Alternativa';
                 type.value = 'option';
                 questionId.value = question;
                 showModal.value = true;
@@ -141,17 +141,17 @@ export default {
         // Function to delete an option of a question
         const deleteOption = async (option: number) => {
             const result = await $swal.fire({
-                title: 'Are you sure you want to delete this option?',
-                text: 'This action cannot be undone.',
+                title: '¿Estas seguro de eliminar la alternativa?',
+                text: 'Esta opcion no se puede retroceder.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete',
-                cancelButtonText: 'No, cancel',
+                confirmButtonText: 'Si, Eliminar',
+                cancelButtonText: 'No, Cancelar',
             });
 
             if (result.isConfirmed) {
                 const response = await questionService.optionDelete(option);
-                toast.success("Option deleted successfully", {
+                toast.success("Alternativa eliminada con exito", {
                     autoClose: 4000,
                 });
                 loadData();
@@ -161,17 +161,17 @@ export default {
         // Function to delete a question
         const deleteQuestion = async (question: number) => {
             const result = await $swal.fire({
-                title: 'Are you sure you want to delete this question?',
-                text: 'Deleting the question will also delete all the options.',
+                title: '¿Estas seguro de eliminar esta pregunta?',
+                text: 'Eliminar la pregunta, eliminara todas sus alternativas relacionadas.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Yes, delete',
-                cancelButtonText: 'No, cancel',
+                confirmButtonText: 'Yes, Eliminar',
+                cancelButtonText: 'No, Cancelar',
             });
 
             if (result.isConfirmed) {
                 const response = await questionService.questionDelete(question);
-                toast.success("Question deleted successfully", {
+                toast.success("Pregunta Eliminada con exito", {
                     autoClose: 4000,
                 });
                 loadData();

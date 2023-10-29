@@ -56,12 +56,12 @@ export default {
                             especiality: item.profesional ? item.profesional.especiality : 'Not Registered'
                         }));
                     } else {
-                        toast.info("No registered professionals", {
+                        toast.info("No hay Pacientes registrados", {
                             autoClose: 4000,
                         });
                     }
                 } else {
-                    toast.info("Error fetching professionals", {
+                    toast.info("Error al obtener a los Pacientes", {
                         autoClose: 4000,
                     });
                 }

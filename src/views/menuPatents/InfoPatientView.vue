@@ -63,7 +63,7 @@ export default {
                         especiality.value = data.patients[0].profesional.especiality;
                     }
                 } else {
-                    toast.warning("Error getting the logged-in user", {
+                    toast.warning("Error al obtener al usuario", {
                         autoClose: 4000,
                     });
                 }

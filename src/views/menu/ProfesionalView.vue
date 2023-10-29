@@ -54,12 +54,12 @@ export default {
                         trainingRecords.value = data;
                         trainingRecords.value = data.map((item: any) => ({ ...item, rut: item.user.rut }));
                     } else {
-                        toast.warning("Error fetching professionals", {
+                        toast.warning("El Base de datos No registra profesionales.", {
                             autoClose: 4000,
                         });
                     }
                 } else {
-                    toast.warning("Error fetching professionals", {
+                    toast.warning("Error al obtener a los profesionales", {
                         autoClose: 4000,
                     });
                 }
