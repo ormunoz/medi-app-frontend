@@ -17,7 +17,8 @@
                                 <TextField v-model="userRegister.name" type="text" label="Name" placeholder="Name" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.last_name" type="text" label="Last Name" placeholder="Last Name" />
+                                <TextField v-model="userRegister.last_name" type="text" label="Last Name"
+                                    placeholder="Last Name" />
                             </div>
                         </div>
                         <div class="row">
@@ -28,7 +29,8 @@
                                 <TextField v-model="userRegister.city" type="text" label="City" placeholder="City" />
                             </div>
                             <div class="col-md-3">
-                                <TextField v-model="userRegister.password" type="password" label="Password" placeholder="Password" />
+                                <TextField v-model="userRegister.password" type="password" label="Password"
+                                    placeholder="Password" />
                             </div>
                         </div>
                         <hr>
@@ -37,7 +39,8 @@
                             <h4 class="radio-question">{{ question.question }}</h4>
                             <div class="options-container">
                                 <div v-for="option in question.option" :key="option.id" class="radio-option">
-                                    <input type="radio" :id="`option${option.id}`" :value="option.id" v-model="userRegister.option[qIndex]">
+                                    <input type="radio" :id="`option${option.id}`" :value="option.id"
+                                        v-model="userRegister.option[qIndex]">
                                     <label :for="`option${option.id}`">{{ option.text }}</label>
                                 </div>
                             </div>
@@ -46,7 +49,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <button class="w-100 btn btn-lg btn-info mt-4" @click="RegisterUser" :disabled="loading">
-                                    {{ loading ? '' : 'Register' }}
+                                    {{ loading ? '' : 'Registrarse' }}
                                     <div class="spinner-border text-info" v-if="loading" role="status">
                                         <span class="sr-only"></span>
                                     </div>
@@ -54,7 +57,8 @@
                             </div>
                             <div class="col-md-6">
                                 <router-link to="/" class="button text-muted" style="text-decoration: none;">
-                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Back to Login</button>
+                                    <button class="w-100 btn btn-lg btn-secondary mt-4" @click="Back">Volver al
+                                        Login</button>
                                 </router-link>
                             </div>
                         </div>
@@ -127,7 +131,7 @@ export default defineComponent({
             if (countOption == 5) {
                 const response = await userService.addPatient(userRegister.value);
                 if (response.code == 200) {
-                    toast.success("Patient Registered. You will now be redirected to the Login page.", {
+                    toast.success("Usuario registrado con exito, sera redirigido al login.", {
                         autoClose: 4000,
                     });
                     loading.value = false;
@@ -135,12 +139,12 @@ export default defineComponent({
                         router.push('/');
                     }, 4000);
                 } else {
-                    toast.warning("Please fill in all fields or the entered Rut already exists", {
+                    toast.warning("porfavor verifique que este todos los datos rellenados", {
                         autoClose: 4000,
                     });
                 }
             } else {
-                toast.warning("Please fill in all the options", {
+                toast.warning("complete toda la opciones por favor", {
                     autoClose: 4000,
                 });
             }
@@ -221,5 +225,4 @@ a {
     .logo-container {
         display: none;
     }
-}
-</style>
+}</style>
